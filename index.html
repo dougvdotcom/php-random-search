@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--
+Displaying A Random Yahoo! Search Every 30 Seconds With JavaScript And PHP
+Copyright 2006 Doug Vanderweide, dba Rescue-ME
+http://www.dougv.com
+
+Distributed under the Creative Commons Attribution / Share-Alike 2.5 License
+http://creativecommons.org/licenses/by-sa/2.5/
+
+Any distribution or derivative work based on this script must include the
+original source code from this work, and must retain this copyright
+notice block intact.
+-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Displaying A Random Yahoo! Search Every 30 Seconds With JavaScript</title>
+<link href="../demo.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+var windowRef;
+var scriptInterval = 30000;
+var winW, winH;
+
+function pageLoad() {
+	setWindowSize();
+	randomSearch();
+}
+
+function randomSearch() {
+	var searchArray = new Array(
+		'puppies',
+		'shoe shine supplies',
+		'Paris Hilton',
+		'nuclear bomb plans',
+		'ugly people',
+		'javascript',
+		'pig Latin',
+		'bad odors',
+		'Abraham Lincoln'
+		);
+	
+	var itemCount = searchArray.length;
+	var searchIndex = Math.random();
+	searchIndex *= itemCount;
+	searchIndex = Math.floor(searchIndex);
+	if(searchIndex == searchArray.length) {
+		searchIndex--;
+	}
+	
+	var popupUrl = 'popup.html?' + escape(searchArray[searchIndex]);
+	var popupOpts = 'width=' + winW + ',height=' + winH + ',status=1,toolbar=1,location=1,menubar=1,directories=1,resizable=1,scrollbars=1'
+	
+	if(windowRef == undefined) {
+		windowRef = window.open(popupUrl, 'popupWindow', popupOpts);
+	}
+	else {
+		if(windowRef.closed) {
+			windowRef = window.open(popupUrl, 'popupWindow', popupOpts);
+		}
+		else {
+			windowRef.location = popupUrl;
+		}
+	}
+	timerId = setTimeout('randomSearch()', scriptInterval);
+}
+
+function timerToggle(status) {
+	var toggleDiv = document.getElementById('timerControl');
+	
+	if(status == 'on') {
+		randomSearch();
+		toggleDiv.innerHTML = '<p><a href="#" onclick="timerToggle(\'off\')">Stop popup window</a></p>';
+	}
+	else {
+		clearTimeout(timerId);
+		toggleDiv.innerHTML = '<p><a href="#" onclick="timerToggle(\'on\')">Start popup window</a></p>';
+	}
+}
+
+function setWindowSize() {
+	var minW = 600;
+	var minH = 400;
+	
+	var agt = navigator.userAgent.toLowerCase();
+	var is_ie = ((agt.indexOf('msie') != -1) && (agt.indexOf('opera') == -1));
+	if(!is_ie) {
+		winW = window.innerWidth;
+		winH = window.innerHeight;
+	}
+	else {
+		winW = document.body.offsetWidth;
+		winH = document.body.offsetHeight;
+	}
+	
+	winW = Math.floor(winW * 0.8);
+	winH = Math.floor(winH * 0.8);
+	
+	if(winW < minW) {
+		winW = minW;
+	}
+	if(winH < minH) {
+		winH = minH;
+	}
+}
+</script>
+<style type="text/css">
+<!--
+.container {
+	width: 450px;
+}
+-->
+</style>
+</head>
+<body onload="pageLoad()">
+<h1>Displaying A Random Yahoo! Search <br />
+Every 30 Seconds With JavaScript And PHP </h1>
+<div id="timerControl"><p><a href="#" onclick="timerToggle('off')">Stop popup window</a></p></div>
+<div class="container">
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Quisque  bibendum, massa vitae dictum mattis, eros augue dictum orci, ut  molestie odio tortor sed turpis. Nunc malesuada arcu eget sapien.  Suspendisse pulvinar convallis enim. Morbi fringilla. </p>
+<p>Aliquam  adipiscing nonummy libero. Phasellus nunc elit, faucibus sodales,  tincidunt vitae, rhoncus id, ante. Mauris vel sapien. Nam gravida, nunc  et varius posuere, felis neque venenatis nibh, nec sagittis nisl ante  eu arcu. Donec fringilla, lectus non mollis varius, sapien mauris  molestie leo, eget mattis lacus nisl id mi. Nulla molestie semper  ligula. </p>
+<p>Nullam sit amet nunc. Donec aliquet accumsan sapien. Nam tempus quam  vitae lacus. Donec augue lectus, fringilla ut, nonummy a, aliquet eget,  tellus. Etiam adipiscing laoreet urna. Vivamus laoreet, pede quis  vehicula posuere, eros enim dignissim purus, commodo vulputate augue  quam ac sapien. Integer sagittis dolor ut nisl. Curabitur sollicitudin.  Suspendisse sed dui nec orci scelerisque sollicitudin. </p>
+<p>In nonummy orci  vel massa. Nam pulvinar. Vivamus sed magna. Integer sagittis metus sed  lectus. Vestibulum lorem lorem, gravida sit amet, euismod at,  adipiscing quis, quam. Morbi quis turpis id purus volutpat placerat.  Nam aliquet elementum urna. Phasellus pulvinar varius dui. </p>
+<p>Donec aliquet ultrices velit. Nullam vel ante vel nibh aliquet  blandit. Integer ut enim ac justo rhoncus auctor. Morbi blandit cursus  leo. Integer consequat sem in lacus. Morbi porttitor lectus vitae enim.  Suspendisse id augue. In est. Suspendisse a urna. Cras lacinia orci vel  orci. </p>
+<p>Maecenas rutrum enim ac orci. Donec urna nunc, pretium sit amet,  volutpat eu, faucibus ac, pede. Quisque scelerisque. Pellentesque nulla  risus, congue at, cursus non, viverra mollis, nunc. </p>
+</div>
+<p>&nbsp;</p>
+</body>
+</html>

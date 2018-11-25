@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!--
+Displaying A Random Yahoo! Search Every 30 Seconds With JavaScript And PHP
+Copyright 2006 Doug Vanderweide, dba Rescue-ME
+http://www.dougv.com
+
+Distributed under the Creative Commons Attribution / Share-Alike 2.5 License
+http://creativecommons.org/licenses/by-sa/2.5/
+
+Any distribution or derivative work based on this script must include the
+original source code from this work, and must retain this copyright
+notice block intact.
+-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<script type="text/javascript">
+var timeLeft;
+
+function loadThePage() {
+	var frameUrl = 'bottomframe.php?p=';
+	var qstring = parent.location.search;
+	if (qstring.substring(0, 1) == '?') {
+		qstring = qstring.substring(1);
+	}
+	
+	frameUrl += qstring;
+	parent.bottomFrame.location = frameUrl;
+	
+	timeLeft = 30000;
+	updateStatus();
+}
+
+function updateStatus() {
+	var seconds = timeLeft / 1000;
+	var out = 'The search page below will change in ' + seconds + ' seconds.';
+	var thediv = document.getElementById('statusMessage');
+	thediv.innerHTML = out;
+	timeLeft -= 1000;
+	
+	setTimeout('updateStatus()', 1000);
+}
+</script>
+<style type="text/css">
+<!--
+body {
+	margin: 10px 5px 10px 5px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: .8em;
+	text-align: center;
+	font-weight: bold;
+	color: #f00;
+	background: none;
+}
+-->
+</style>
+</head>
+<body onload="loadThePage()">
+<div id="statusMessage"></div>
+</body>
+</html>
